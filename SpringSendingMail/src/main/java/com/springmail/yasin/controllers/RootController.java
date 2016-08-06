@@ -11,10 +11,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springmail.yasin.dto.SignupForm;
 import com.springmail.yasin.mail.MailSender;
 import com.springmail.yasin.services.UserService;
+import com.springmail.yasin.util.MyUtil;
 
 @Controller
 public class RootController {
@@ -32,15 +34,7 @@ public class RootController {
 		this.userService = userService;
 	}
 
-	// @RequestMapping("/")
-	// @ResponseBody
-	// public String home() throws MessagingException {
-	//
-	// //mailSender.send("abcd@gmail.com", "Hello World !", "Mail from Spring
-	// !?");
-	// return "home";
-	// }
-
+	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String signup(Model model) {
 
@@ -51,14 +45,17 @@ public class RootController {
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String signup(@ModelAttribute("signupForm") @Valid SignupForm signupForm,
-			BindingResult result) {
+			BindingResult result, RedirectAttributes redirectAttributes) {
 
 		if (result.hasErrors()) 
 			return "signup";
 		
-		
 		userService.signup(signupForm);
+		
+		MyUtil.flash(redirectAttributes, "success", "signupSuccess");
+		
 
+	
 		return "redirect:/";
 	}
 

@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
@@ -14,7 +15,8 @@
 <title>Spring MVC</title>
 
 <!-- Bootstrap -->
-<link href="/public/lib/bootstrap-3.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/public/lib/bootstrap-3.3.6/dist/css/bootstrap.min.css"
+	rel="stylesheet">
 
 <!-- Our CSS {burada hata var video:13} -->
 <link href="/public/css/styles.css" rel="stylesheet">
@@ -23,7 +25,6 @@
 
 <!-- Hata alınan CSS yapısını bu şekilde düzeltmiş olduk. -->
 <style>
-
 .error {
 	color: #A94442;
 }
@@ -90,3 +91,11 @@
 			</div>
 			<!-- /.container-fluid -->
 		</nav>
+
+		<c:if test="${not empty flashMessage}">
+			<div class="alert alert-${flashKind} alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-hidden="true">&times;</button>
+				${flashMessage}
+			</div>
+		</c:if>
