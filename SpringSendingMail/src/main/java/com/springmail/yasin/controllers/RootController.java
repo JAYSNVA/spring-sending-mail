@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +19,7 @@ import com.springmail.yasin.dto.SignupForm;
 import com.springmail.yasin.mail.MailSender;
 import com.springmail.yasin.services.UserService;
 import com.springmail.yasin.util.MyUtil;
+import com.springmail.yasin.validators.SignupFormValidator;
 
 @Controller
 public class RootController {
@@ -25,15 +28,24 @@ public class RootController {
 	
 	private MailSender mailSender;
 	private  UserService userService;
-	
+	private SignupFormValidator signupFormValidator;
 
-	@Autowired                                                                                          // public RootController(@Qualifier("smtpMailSender")MailSender mailSender)
-	public RootController(MailSender mailSender, UserService userService) {                            // @Qualifier("smtpMailSender")
-																										// bu şekilde de
-		this.mailSender = mailSender;			   														// çalışabilir. yada
+	@Autowired                                                                     // public RootController(@Qualifier("smtpMailSender")MailSender mailSender)
+	public RootController(MailSender mailSender, UserService userService, 
+			SignupFormValidator signupFormValidator) {                            // @Qualifier("smtpMailSender")
+																                 // bu şekilde de
+		this.mailSender = mailSender;			   								// çalışabilir. yada
 		this.userService = userService;
+		this.signupFormValidator=signupFormValidator;
 	}
 
+	
+	@InitBinder("signupForm")
+	protected void initSignupBinder (WebDataBinder binder) {
+		binder.setValidator(signupFormValidator);
+	} 
+	
+	
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String signup(Model model) {
