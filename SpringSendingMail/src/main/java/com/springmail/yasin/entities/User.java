@@ -7,11 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
-
-@Entity
-@Table(name="usr", indexes= {
+/*, indexes= {
 		@Index(columnList = "email", unique=true)
 })
+*/
+
+@Entity
+@Table(name="usr")
 public class User {
 
 	public static final int EMAIL_MAX=250;

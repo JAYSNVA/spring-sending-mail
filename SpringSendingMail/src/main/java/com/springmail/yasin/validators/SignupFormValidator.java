@@ -20,13 +20,14 @@ public class SignupFormValidator extends LocalValidatorFactoryBean {
 		this.userRepository = userRepository;
 	}
 	
+	/*
 	@Override
 	public boolean supports(Class<?> clazz) {
 			return clazz.isAssignableFrom(SignupForm.class) ;
 	}
 	
 	@Override
-	public void validate(Object obj, Errors errors, final Object... validationHints) { //vlidationHints objesini final olarak yiyor.
+	public void validate(Object obj, Errors errors, final Object... validationHints) { //validationHints objesini final olarak yiyor.
 		
 		super.validate(obj, errors, validationHints);
 		
@@ -34,7 +35,7 @@ public class SignupFormValidator extends LocalValidatorFactoryBean {
 			SignupForm signupForm = (SignupForm) obj ;
 			User user = userRepository.findByEmail(signupForm.getEmail());
 			if(user != null)
-					errors.rejectValue("email","emailNotUnique");          //Burada hala hata olabilir
+					errors.rejectValue("email","emailNotUnique");    
 		}
-	}
+	}*/
 }

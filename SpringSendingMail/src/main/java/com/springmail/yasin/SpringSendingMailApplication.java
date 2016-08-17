@@ -11,12 +11,14 @@ import org.springframework.context.ApplicationContext;
 //import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import scala.App;
 
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
+@EnableTransactionManagement
 public class SpringSendingMailApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringSendingMailApplication.class);
