@@ -20,7 +20,7 @@ public class SignupFormValidator extends LocalValidatorFactoryBean {
 		this.userRepository = userRepository;
 	}
 	
-	/*
+	
 	@Override
 	public boolean supports(Class<?> clazz) {
 			return clazz.isAssignableFrom(SignupForm.class) ;
@@ -37,5 +37,5 @@ public class SignupFormValidator extends LocalValidatorFactoryBean {
 			if(user != null)
 					errors.rejectValue("email","emailNotUnique");    
 		}
-	}*/
+	}
 }

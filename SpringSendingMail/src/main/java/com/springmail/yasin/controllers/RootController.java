@@ -28,22 +28,22 @@ public class RootController {
 	
 	private MailSender mailSender;
 	private  UserService userService;
-	//private SignupFormValidator signupFormValidator;
+	private SignupFormValidator signupFormValidator;
 
 	@Autowired                                                                     // public RootController(@Qualifier("smtpMailSender")MailSender mailSender)
-	public RootController(MailSender mailSender, UserService userService /*, 
-			SignupFormValidator signupFormValidator*/) {                            // @Qualifier("smtpMailSender")
+	public RootController(MailSender mailSender, UserService userService, 
+			SignupFormValidator signupFormValidator) {                            // @Qualifier("smtpMailSender")
 																                 // bu şekilde de
 		this.mailSender = mailSender;			   								// çalışabilir. yada
 		this.userService = userService;
-		//this.signupFormValidator=signupFormValidator;
+		this.signupFormValidator=signupFormValidator;
 	}
 
 	
-	/*@InitBinder("signupForm")
+	@InitBinder("signupForm")
 	protected void initSignupBinder (WebDataBinder binder) {
 		binder.setValidator(signupFormValidator);
-	} */
+	} 
 	
 	
 	
