@@ -29,12 +29,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	
 	
 	@Override
-	@Transactional(propagation=Propagation.SUPPORTS, readOnly=false)
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false) //about @Transactional
 	public void signup(SignupForm signupForm) {
 		
 		User user = new User();
-		user.setName(signupForm.getName());
 		user.setEmail(signupForm.getEmail());
+		user.setName(signupForm.getName());
 		user.setPassword(signupForm.getPassword());
 		userRepository.save(user);
 	}

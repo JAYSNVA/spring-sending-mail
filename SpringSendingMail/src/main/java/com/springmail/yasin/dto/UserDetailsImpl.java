@@ -11,8 +11,9 @@ import com.springmail.yasin.entities.User;
 
 public class UserDetailsImpl implements UserDetails {
 
-	private static final long serialVersionUID = -537769730126890192L;
 
+	private static final long serialVersionUID = -537769730126890192L;
+	
 	private User user;
 
 	public UserDetailsImpl(User user) {
