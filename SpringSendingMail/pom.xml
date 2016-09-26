@@ -57,7 +57,7 @@
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 		<!-- For Using JSP -->
-		
+
 		<!-- Data Access -->
 
 		<dependency>
@@ -76,7 +76,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 		<!-- Data Access -->
-		
+
 		<!-- Spring Security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -86,8 +86,9 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
-			<version>${spring.security.version}</version>
+			<version>4.0.4.RELEASE</version>
 		</dependency>
+
 		<!-- Spring Security -->
 
 		<!-- Mail -->

@@ -38,6 +38,7 @@
 			
 			<button type="submit" class="btn btn-primary"></button>
 
+			<a class="btn btn-default" href="/forgot-password">Forgot Password</a>
 		</form:form>
 	</div>
 </div>

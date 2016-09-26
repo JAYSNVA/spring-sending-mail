@@ -16,7 +16,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.validation.BindingResult;
 
+import com.springmail.yasin.dto.ForgotPasswordForm;
+import com.springmail.yasin.dto.ResetPasswordForm;
 import com.springmail.yasin.dto.SignupForm;
 import com.springmail.yasin.dto.UserDetailsImpl;
 import com.springmail.yasin.entities.User;
@@ -46,8 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false) // about
-																			// @Transactional
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false) // about @Transactional																		
 	public void signup(SignupForm signupForm) {
 
 		final User user = new User();
@@ -72,18 +74,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			        }
 		    });
 	}
+	
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByEmail(username); // findByEmail
-															// üzerinde tekrar
-															// bir değişilik
-															// yapılacak ve o
-															// hata giderilecek.
+		User user = userRepository.findByEmail(username); // findByEmail üzerinde tekrar bir değişilik yapılacak ve o hata giderilecek.
 		if (user == null)
 			throw new UsernameNotFoundException(username);
 
 		return new UserDetailsImpl(user);
 	}
+	
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
@@ -98,6 +99,59 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		
 		user.getRoles().remove(Role.UNVERIFIED);
 		user.setVerificationCode(null);
+		userRepository.save(user);
+		
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void forgotPassword(ForgotPasswordForm form) {
+		
+		final User user = userRepository.findByEmail(form.getEmail());
+		final String forgotPasswordCode = RandomStringUtils.randomAlphanumeric(User.RANDOM_CODE_LENGTH);
+		
+		user.setForgotPasswordCode(forgotPasswordCode);
+		final User savedUser = userRepository.save(user);
+		
+		TransactionSynchronizationManager.registerSynchronization(
+			    new TransactionSynchronizationAdapter() {
+			        @Override
+			        public void afterCommit() {
+			        	try {
+							mailForgotPasswordLink(savedUser);
+						} catch (MessagingException e) {
+							logger.error(ExceptionUtils.getStackTrace(e));
+						}
+			        }
+
+				
+		    });				
+
+	}
+
+	private void mailForgotPasswordLink(User user) throws MessagingException {
+		
+		String forgotPasswordLink = 
+				MyUtil.hostUrl() + "/reset-password/" +
+				user.getForgotPasswordCode();
+				mailSender.send(user.getEmail(),
+				MyUtil.getMessage("forgotPasswordSubject"),
+				MyUtil.getMessage("forgotPasswordEmail", forgotPasswordLink));
+
+	}
+
+	@Override
+	public void resetPassword(String forgotPasswordCode,
+			ResetPasswordForm resetPasswordForm, 
+			BindingResult result) {
+		User user = userRepository.findByForgotPasswordCode(forgotPasswordCode);
+		if (user == null)
+			result.reject("invalidForgotPassword");
+		
+		if (result.hasErrors())
+			return;
+		
+		user.setForgotPasswordCode(null);
+		user.setPassword(passwordEncoder.encode(resetPasswordForm.getPassword().trim()));
 		userRepository.save(user);
 		
 	}

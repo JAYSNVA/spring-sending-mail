@@ -15,12 +15,16 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="usr", indexes= {
-		@Index(columnList = "email", unique=true)
+		@Index(columnList = "email", unique=true),
+		@Index(columnList = "forgotPasswordCode", unique=true)
 })
 public class User {
 
 	public static final int EMAIL_MAX=250;
 	public static final int NAME_MAX=50;
+	public static final String EMAIL_PATTERN = "[A-Za-z0-9._%-+]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+	public static final int RANDOM_CODE_LENGTH = 16;
+	public static final int PASSWORD_MAX = 30;
 	
 	public static enum Role {
 		UNVERIFIED, BLOCKED, ADMIN
@@ -41,11 +45,22 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 	
-	@Column(length=16)
+	@Column(length = 16)
 	private String verificationCode;
 	
 	public String getVerificationCode() {
 		return verificationCode;
+	}
+	
+	@Column(length = RANDOM_CODE_LENGTH)
+	private String forgotPasswordCode;
+
+	public String getForgotPasswordCode() {
+		return forgotPasswordCode;
+	}
+
+	public void setForgotPasswordCode(String forgotPasswordCode) {
+		this.forgotPasswordCode = forgotPasswordCode;
 	}
 
 	public void setVerificationCode(String verificationCode) {
